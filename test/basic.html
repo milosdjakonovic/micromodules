@@ -5,13 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Basic test</title>
-	<script src="../src/micromodules.js"></script>
-	<style>@import "css/style.css";</style>
+
+  <!-- micromodules -->
+  <script src="../src/micromodules.js"></script>
+  <!-- ./micromodules -->
+
+
+  <script src="js/one.js"></script>
+  <script src="js/two.js"></script>
+  <script src="js/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    declare('$', function(){
+      // `this` is always window, both for declare and provide
+      return this.jQuery;
+    });
+
+
+    provide(['$', 'one', 'three'], function($, one, three){
+      console.log("`this` is window: " , this === window );
+      console.log("`one` is:",   one   );
+      console.log("`three` is:", three );
+
+    });
+
+    declare('LoremIpsumModule', ["4th"], function(fth){
+      console.log("4th is: ", fth  );
+      return 'The value of unmet module...';
+    });
+
+
+    setTimeout(function(){
+      declare("4th", 222);
+    }, 5000);
+
+  </script>
+
+  <style>@import "css/style.css";</style>
+  
   </head>
   <body>
     
 
-	
+	<p>Micromodules - testing</p>
 	
 	
 
