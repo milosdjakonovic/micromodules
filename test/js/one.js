@@ -1,0 +1,3 @@
+declare('one', {
+	"key":"value"
+});
