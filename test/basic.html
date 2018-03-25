@@ -4,8 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic test</title>
+    <title>Micromodules - basic testing</title>
 
+
+  <script>
+    
+  window.log=window.console.log;
+  </script>
+  
   <!-- micromodules -->
   <script src="../src/micromodules.js"></script>
   <!-- ./micromodules -->
@@ -14,43 +20,144 @@
   <script src="js/one.js"></script>
   <script src="js/two.js"></script>
   <script src="js/three.js"></script>
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.4.1/qunit.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.4.1/qunit.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/zenburn.min.css" />
+
+
+  <script data-test="1">
+
+
     declare('$', function(){
-      // `this` is always window, both for declare and provide
+      var args = arguments;
+      var Self = this;
+      QUnit.test( "Basic declare function test", function( assert ) {
+        assert.ok( args.length === 0 , "Arguments length is 0!" );
+        assert.ok( Self === window, "`this` is window!" );
+        assert.ok(Self.jQuery === window.jQuery, "jQuery is to be returned.");
+        
+      });
       return this.jQuery;
     });
 
 
     provide(['$', 'one', 'three'], function($, one, three){
-      console.log("`this` is window: " , this === window );
-      console.log("`one` is:",   one   );
-      console.log("`three` is:", three );
+
+      var args = arguments;
+      var Self = this;
+      QUnit.test( "Basic provide function test", function( assert ) {
+        assert.ok( args.length === 3 , "Arguments length is 3!" );
+        assert.ok( $ === jQuery, "Arg $ is jQuery" );
+        assert.ok( $.isPlainObject( one) && one.key === "value", "Value of `one` module" );
+        assert.ok( typeof three === "function", "Value of `three` module" );
+        assert.ok( Self === window, "`this` is window!" );
+      });
 
     });
 
+    var _execTime = $.now();
+
     declare('LoremIpsumModule', ["4th"], function(fth){
-      console.log("4th is: ", fth  );
+
+      var args=arguments; var Self = this;
+      // tc
+      QUnit.test( "Advanced declare function test - with one unmet dependancy", function( assert ) {
+        assert.ok( Self === window, "`this` is window!" );
+        assert.ok( args.length === 1 , "Arguments length is 1!" );
+        assert.ok( fth === 222, "Arg fth is num 222");
+
+        assert.ok(
+          ($.now() - _execTime) >= 1000,
+          "Definition function executed with designated delay."
+        );
+
+      });// /tc
+
       return 'The value of unmet module...';
     });
 
 
+    log('Once?')
+    declare('LoremIpsumModule2', ["six", "one", "two", 'five'], function(six, one, two, five){
+      log( 'Executing LoremIpsumModule2 factory');
+      return function(){
+        return "value of LoremIpsumModule2";
+      }
+    });
+
+    setTimeout(function(){
+      declare('six', function(){
+        return 'value of six';
+      });
+      //declare('five', 'value of five');
+    }, 500);
+
+
+    /*declare('LoremIpsumNeverMetModule', ["$", "noexist2"], function(){
+      return 'Nothing';
+    });
+
+    QUnit.test("LoremIpsumNeverMetModule", function(assert){
+      provide('LoremIpsumNeverMetModule', function(l){
+        assert.notOk( l  , "jbg")
+      });
+    }); */
+
     setTimeout(function(){
       declare("4th", 222);
-    }, 5000);
+    }, 1000);
+
+    setTimeout(function(){
+      QUnit.test("No leftovers in _unmet", function(assert){
+        assert.ok( declare._unmet.length === 0, ''  );
+      });
+    },2000);
 
   </script>
 
-  <style>@import "css/style.css";</style>
   
   </head>
   <body>
-    
 
-	<p>Micromodules - testing</p>
-	
-	
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-12">
+
+            <div class="jumbotron">
+                <h2 style="text-align: center;text-transform: uppercase;margin: 30px 0px;font-weight: bold;">Micromodules - basic testing</h2>
+              </div>
+            
+            
+            <div id="qunit"></div>
+            <div id="qunit-fixture"></div>	
+
+            <pre><code></code></pre>
+
+        </div>
+
+      </div>
+    </div>
 
 
+
+
+<script>
+  $(function(){
+    $('[data-test]').each(function(i,el){
+      $('code').html(
+        $(el).prop('innerText')
+      )
+    });
+    hljs.initHighlightingOnLoad();
+  });
+</script>
   </body>
 </html>

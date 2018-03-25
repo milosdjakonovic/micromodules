@@ -2,12 +2,11 @@
 
     //simple array iterator
     function _a(array, method){
-        var templ=array.length;
-        for(var i=0;i<templ;i++){
+        //var templ=array.length;
+        for(var i=0;i<array.length;i++){
           method.call(this, i, array[i] );
         }
     }
-
 
 
 
@@ -39,12 +38,17 @@
     ],
 
     processUnmet = function(id){
-        _a(declareQueue, function(index,elem){
-            if(elem.unmet_module === id){
-                declare.apply(w, elem.args)
-                delete(declareQueue[index]);                
+
+        var LdeclareQueue = declareQueue;declareQueue=[];
+        
+        for(i=0;i<LdeclareQueue.length;i++){
+            if(LdeclareQueue[i].unmet_module === id){
+                var taj = LdeclareQueue.splice(i,1);
+                declare.apply(w, taj[0].args);
             }
-        });
+        }
+        declareQueue.concat(LdeclareQueue)
+
     },
 
     /**
@@ -54,21 +58,21 @@
      * declare('id', ["dep1", "dep2"], cb);
      */
     declare = function(id, cbOrDepsArr, possibleCb){
-
-        if( (typeof(id) === "string") && (typeof(cbOrDepsArr) === "function") ){ // clean situation, id and cb
+        //Case: declare('id', cb);
+        if( (typeof(id) === "string") && (typeof(cbOrDepsArr) === "function") ){
             _module[id]=cbOrDepsArr.apply(w);
             processUnmet(id);
             return _module[id];//
         }
         else if( w.Object.prototype.toString.call( cbOrDepsArr ) === '[object Array]' ){
-            //here we have deps
+            //case: declare('id', ['dep1', 'dep2'], cb)
             var forCbArray = [], unmet=false;
             for(var i=0; i<cbOrDepsArr.length; i++ ){
                 var modName = cbOrDepsArr[i];
                 if(typeof( _module[modName] ) !== "undefined"){
                     forCbArray.push( _module[modName] );
                 } else {
-                    unmet = true;
+                    unmet = true;// (modName === 'five') && log('ovde, za:' , id, ' - ', declare.caller)
                     declareQueue.push({
                         args: arguments,
                         unmet_module: modName
