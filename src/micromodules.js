@@ -24,10 +24,13 @@
      */
     provide = function(deps, cb){
 
-        var forCbArray = [];
+        var forCbArray = [], dontRun=false;
         for(var i=0; i<deps.length;i++ ){
-            forCbArray.push( _module[deps[i]] );
+            if (typeof( _module[deps[i]] ) !== "undefined")
+                forCbArray.push( _module[deps[i]] );
+            else dontRun = true;
         }
+        if(dontRun) return false;
         return cb.apply(w, forCbArray);
         
     },
@@ -40,14 +43,14 @@
     processUnmet = function(id){
 
         var LdeclareQueue = declareQueue;declareQueue=[];
-        
+
         for(i=0;i<LdeclareQueue.length;i++){
             if(LdeclareQueue[i].unmet_module === id){
                 var taj = LdeclareQueue.splice(i,1);
                 declare.apply(w, taj[0].args);
             }
         }
-        declareQueue.concat(LdeclareQueue)
+        declareQueue = declareQueue.concat(LdeclareQueue);
 
     },
 

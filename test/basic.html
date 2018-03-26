@@ -9,7 +9,10 @@
 
   <script>
     
-  window.log=window.console.log;
+  window.log=function(arg){
+    window.console.log(arg);
+  }
+  
   </script>
   
   <!-- micromodules -->
@@ -65,6 +68,7 @@
     var _execTime = $.now();
 
     declare('LoremIpsumModule', ["4th"], function(fth){
+      console.log('executed `LoremIpsumModule` factory');
 
       var args=arguments; var Self = this;
       // tc
@@ -84,8 +88,8 @@
     });
 
 
-    log('Once?')
-    declare('LoremIpsumModule2', ["six", "one", "two", 'five'], function(six, one, two, five){
+    declare('LoremIpsumModule2', ["six", "one", "two", 'five'], function(six, one, two, five){ //this is executed twice.
+      //Bcs of, when there is two unmet deps in array, factory shall be executed hmm, twice?
       log( 'Executing LoremIpsumModule2 factory');
       return function(){
         return "value of LoremIpsumModule2";
@@ -96,19 +100,18 @@
       declare('six', function(){
         return 'value of six';
       });
-      //declare('five', 'value of five');
+      declare('five', 'value of five');
     }, 500);
 
 
-    /*declare('LoremIpsumNeverMetModule', ["$", "noexist2"], function(){
+    declare('LoremIpsumNeverMetModule', ["$", "noexist2"], function(){
       return 'Nothing';
     });
 
-    QUnit.test("LoremIpsumNeverMetModule", function(assert){
-      provide('LoremIpsumNeverMetModule', function(l){
-        assert.notOk( l  , "jbg")
-      });
-    }); */
+    provide('LoremIpsumNeverMetModule', function(l){
+      log('NE', l)
+    });    
+    
 
     setTimeout(function(){
       declare("4th", 222);
@@ -139,7 +142,7 @@
             <div id="qunit"></div>
             <div id="qunit-fixture"></div>	
 
-            <pre><code></code></pre>
+            <pre><code class="javascript"></code></pre>
 
         </div>
 

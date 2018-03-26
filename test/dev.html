@@ -49,6 +49,9 @@
     $(function($){
       $('.jumbotron').click(function(){
         declare('mod3', 1212);
+        QUnit.test("No leftovers in _unmet", function(assert){
+          assert.ok( declare._unmet.length === 0, ''  );
+        });        
       });
     });
 
