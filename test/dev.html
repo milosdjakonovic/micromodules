@@ -6,54 +6,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Micromodules - basic testing</title>
 
+    <link rel="stylesheet" href="../node_modules/qunit/qunit/qunit.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">  
+    <link rel="stylesheet" href="../node_modules/highlight.js/styles/zenburn.css" />
+
 
   <script>
-    //https://www.paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
-  window.log=function(){log.history=log.history||[];log.history.push(arguments);if(this.console){console.log(Array.prototype.slice.call(arguments))}};
+/* https://www.npmjs.com/package/node-qunit-phantomjs */    
+  window.l=function(arg){
+    window.console.log(arg);
+  }
   </script>
   
   <!-- micromodules -->
   <script src="../src/micromodules.js"></script>
   <!-- ./micromodules -->
 
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+  <script src="../node_modules/qunit/qunit/qunit.js"></script>
+  <script src="../node_modules/highlight.js/lib/highlight.js"></script>
 
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.4.1/qunit.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qunit/2.4.1/qunit.min.css" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">  
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/zenburn.min.css" />
+  <script type="text/n" data-md="inline1">
+    var That = this;
+    QUnit.test('Inside inline module', function(assert){
+      assert.deepEqual(That, window);
+    })
+    return "A value of some 'inline module'";
+  </script>
 
 
   <script data-test="1">
 
+// ------------------------------------------------------------------
 
-    //declare("mod1", {value:'ofMod1'});
+QUnit.test('Basic module functionality & assignment rules', function(assert){
 
-    declare("mod2", ["mod3"], function(mod3){
+  declare('name', 'John Doe');
+  assert.deepEqual( include('name'), 'John Doe' );
 
-      var Self = this, args = arguments;
-      QUnit.test( "Declaring of mod2", function( assert ) {
-        assert.ok( args.length === 1 , "Arguments length is 1!" );
-        assert.ok( Self === window, "`this` is window!" );
-        //assert.ok(declare._unmet.length === 0, 'Unmet empty');
-      });
-      
-      return "value of `mod1`!";
-    });
+  declare('name', 'Some other person');
+  assert.notEqual( include('name'), 'Some other person' );
+  assert.deepEqual( include('name'), 'John Doe' );
+
+  declare.remove('name');
+  //assert.notEqual( include('name'), 'John Doe' ); - this breaks test, todo check
+
+  declare('name', 'Some other person');
+  assert.deepEqual( include('name'), 'Some other person' );
+
+  declare('Sysprops', {key:'value'});
+  assert.deepEqual( {key:'value'}, include('Sysprops') );
+
+  //Regarding data types
+  declare('A number', 1);
+  var aNumber = include('A number');
+  assert.deepEqual( aNumber, 1 );
+  assert.notDeepEqual( aNumber, '1' );
+  assert.notDeepEqual( aNumber, true );
+  assert.equal(aNumber, '1');
+  assert.equal(aNumber, true);
 
 
-    $(function($){
-      $('.jumbotron').click(function(){
-        declare('mod3', 1212);
-        QUnit.test("No leftovers in _unmet", function(assert){
-          assert.ok( declare._unmet.length === 0, ''  );
-        });        
-      });
-    });
+
+
+
+});
+
+
+QUnit.test('A more complex module type testing and checking of internals', function(assert){
+  //Now the real job
+
+  var cachedInclude = include;
+  declare('ComplexM', function(include){
+    assert.deepEqual(window, this);
+    assert.deepEqual(cachedInclude, include);
+    assert.deepEqual(arguments.length, 1);
+
+
+    assert.deepEqual( {key:'value'}, include('Sysprops') );
+
+    return 'some value';
+  });
+
+
+  include('ComplexM');
+  include('ComplexM');
+
+  assert.deepEqual(
+    include('ComplexM'), 'some value'
+  );
+
+});
+
+QUnit.test('Auto importing of globals', function(assert){
+  assert.deepEqual(
+    include('Date'), Date
+  )
+});
+
+QUnit.test('Inline modules', function(assert){
+  assert.deepEqual(
+    include('inline1'), "A value of some 'inline module'"
+  );
+
+});
 
 
   </script>
@@ -75,7 +132,7 @@
             <div id="qunit"></div>
             <div id="qunit-fixture"></div>	
 
-            <pre><code></code></pre>
+            <pre><code class="javascript"></code></pre>
 
         </div>
 

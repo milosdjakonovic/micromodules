@@ -1,0 +1,33 @@
+{
+  "name": "micromodules",
+  "version": "0.0.1",
+  "description": "A way to organize JavaScript code for browsers",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milosdjakonovic/micromodules.git"
+  },
+  "keywords": [
+    "modules",
+    "javascript-modules",
+    "amd"
+  ],
+  "author": "Milos Djakonovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/milosdjakonovic/micromodules/issues"
+  },
+  "homepage": "https://github.com/milosdjakonovic/micromodules#readme",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "highlight.js": "^9.12.0",
+    "jquery": "^1.12.4",
+    "qunit": "^2.4.1"
+  }
+}
