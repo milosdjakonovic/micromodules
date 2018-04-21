@@ -10,7 +10,7 @@
      * @param txt - warning text
      */
     warn = function(txt){
-        (console ? (console.warn || console.log) : function (m) { return m; })(txt);
+        (console) ? console.log(txt) : false;
     },
 
     /**

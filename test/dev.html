@@ -45,9 +45,9 @@ QUnit.test('Basic module functionality & assignment rules', function(assert){
   declare('name', 'John Doe');
   assert.deepEqual( include('name'), 'John Doe' );
 
-  /*declare('name', 'Some other person');
+  declare('name', 'Some other person');
   assert.notEqual( include('name'), 'Some other person' );
-  assert.deepEqual( include('name'), 'John Doe' );*/
+  assert.deepEqual( include('name'), 'John Doe' );
 
   declare.remove('name');
   //assert.notEqual( include('name'), 'John Doe' ); - this breaks test, todo check
