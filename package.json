@@ -1,8 +1,8 @@
 {
   "name": "micromodules",
   "version": "0.0.1",
-  "description": "A way to organize JavaScript code for browsers",
-  "main": "index.js",
+  "description": "Minimalistic (but convenient) JS module system for browsers",
+  "main": "src/micromodules.js",
   "directories": {
     "test": "test"
   },
@@ -16,7 +16,10 @@
   "keywords": [
     "modules",
     "javascript-modules",
-    "amd"
+    "amd",
+    "modularization",
+    "module",
+    "module-system"
   ],
   "author": "Milos Djakonovic",
   "license": "MIT",
