@@ -40,12 +40,12 @@
             $modules[name] = ret;
             thatScr.parentNode.removeChild(thatScr);
             return ret;
-        } else if ( name in win ){
+        } else if ( name in win && /*deep include*/ arguments[1] == true ){
             $modules[name] = win[name];
             return win[name]
         } else {
             warn("Failed: module [" + name + "] does not exist.");
-            return false;
+            return undefined;
         }
     },
 

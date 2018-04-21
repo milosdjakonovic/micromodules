@@ -50,13 +50,18 @@ QUnit.test('Basic module functionality & assignment rules', function(assert){
   assert.deepEqual( include('name'), 'John Doe' );
 
   declare.remove('name');
-  //assert.notEqual( include('name'), 'John Doe' ); - this breaks test, todo check
+  assert.notEqual( include('name'), 'John Doe' );
+  console.log( include('name') );
+
 
   declare('name', 'Some other person');
-  assert.deepEqual( include('name'), 'Some other person' );
+  assert.deepEqual( include('name'), 'Some other person', 'This testt' );
 
   declare('Sysprops', {key:'value'});
   assert.deepEqual( {key:'value'}, include('Sysprops') );
+
+  var nonExistingMod = include('nonExistingMod');
+  assert.deepEqual(nonExistingMod, undefined);
 
   //Regarding data types
   declare('A number', 1);
@@ -68,10 +73,31 @@ QUnit.test('Basic module functionality & assignment rules', function(assert){
   assert.equal(aNumber, true);
 
 
+});
 
 
+
+
+QUnit.test('deleting modules', function(assert){
+
+  declare('mod22', 100);
+  assert.deepEqual( include('mod22'), 100 );
+  var removalReturnVal = declare.remove('mod22');
+  assert.deepEqual(removalReturnVal, true);
+  
+  assert.deepEqual(include('mod22'), undefined)
+
+  declare('mod22', function(){
+    return 'the val';
+  });
+
+  assert.deepEqual(include('mod22'), 'the val');
+
+  var removalReturnValNonEx = declare.remove('somenonexistingmodule');
+  assert.deepEqual(removalReturnValNonEx, false);
 
 });
+
 
 
 QUnit.test('A more complex module type testing and checking of internals', function(assert){
@@ -101,7 +127,10 @@ QUnit.test('A more complex module type testing and checking of internals', funct
 
 QUnit.test('Auto importing of globals', function(assert){
   assert.deepEqual(
-    include('Date'), Date
+    include('Date', 1), Date , 'Date from window is included when deep include set to true'
+  )
+  assert.notDeepEqual(
+    include('Date'), undefined, 'Date is imported to module object and this time NOT pulled from global'
   )
 });
 
