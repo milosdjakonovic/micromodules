@@ -1,8 +1,8 @@
-[![build status][travis-img]][travis]
+[![build status][travis-img]][travis] [![GitHub issues](https://img.shields.io/github/issues/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/issues) [![GitHub license](https://img.shields.io/github/license/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/blob/master/license)
 
 # micromodules
 
-Minimalistic (but convenient) JS module system for browsers. **micromodules** is a good way to organize browser code when using mastodon-like libraries and/or tooling is less desirable option. It does not load JS files for you but rather helps you to keep your code into meaningfull and reusable modules. **micromodules** weights only ~900B compressed and is suitable for placing into document's head or anwere else.
+Minimalistic (but convenient) JS module system for browsers. **micromodules** is a good way to organize browser code when using mastodon-like libraries and/or tooling is less desirable option. It does not load JS files for you but rather helps you to keep your code into meaningfull and reusable modules. **micromodules** weights only ~900B compressed and is suitable for placing into document's head or anywhere else.
 
 ### Usage
 
@@ -41,7 +41,7 @@ It is good time to say more about declaring module with setup function. Setup fu
     };
   });
 ```
-2.If you ever pass function as an argument to `declare` it will be executed and return value will be used as module value. So, for example, things like `jQuery`, which are actually functions, would have to be declared like this:
+2.If you pass function as an argument to `declare` it will be executed and return value will be used as module value. So, for example, things like `jQuery`, which are actually functions, would have to be declared like this:
 ```javascript
   declare('jQuery', function(include){
     return jQuery
@@ -52,7 +52,7 @@ It is good time to say more about declaring module with setup function. Setup fu
 ##### Declaring 'inline' module
 If your prefer to declare modules immidiately (for example) in document's head and to include **micromodule** library code after that, you have an option of using 'inline' modules declaration, like following:
 
-```
+```html
   <script type="text/n" data-md="inline1">
     // regular JS code
     // and return statement as if we are inside function's body
@@ -60,7 +60,7 @@ If your prefer to declare modules immidiately (for example) in document's head a
   </script>
 ```
 
-Requirement's are that `script`'s attribute `type` is set to ignorable value (antyhing other than `"module"` (ES6) or `"text/javascript"`) and `data-md` attribute is set to module's id. This way, module will be registered whenever **micromodule** library code occures.
+Requirements are that `script`'s attribute `type` is set to ignorable value (antyhing other than `"module"` (ES6) or `"text/javascript"`) and `data-md` attribute is set to module's id. This way, module will be registered whenever **micromodule** library code occurs.
 
 #### Using modules
 Module is used with `include` function call:
