@@ -1,4 +1,6 @@
-[![build status][travis-img]][travis] [![GitHub issues](https://img.shields.io/github/issues/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/issues) [![GitHub license](https://img.shields.io/github/license/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/blob/master/license)
+[![build status][travis-img]][travis] [![GitHub issues](https://img.shields.io/github/issues/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/issues) [![GitHub license](https://img.shields.io/github/license/milosdjakonovic/micromodules.svg)](https://github.com/milosdjakonovic/micromodules/blob/master/license) [![GitHub version](https://badge.fury.io/gh/milosdjakonovic%2Fmicromodules.svg)](https://badge.fury.io/gh/milosdjakonovic%2Fmicromodules) [![Maintainability](https://api.codeclimate.com/v1/badges/2b75b55af4b2da6c1cb1/maintainability)](https://codeclimate.com/github/milosdjakonovic/micromodules/maintainability) [![Twitter](https://img.shields.io/twitter/url/https/github.com/milosdjakonovic/micromodules.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fmilosdjakonovic%2Fmicromodules)
+
+
 
 # micromodules
 

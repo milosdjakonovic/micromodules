@@ -1,3 +1,0 @@
-declare('one', {
-	"key":"value"
-});
