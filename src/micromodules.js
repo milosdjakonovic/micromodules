@@ -1,3 +1,4 @@
+//micromodules | Milos Djakonovic | MIT | github.com/milosdjakonovic
 (function(win){
     var
     /**
@@ -33,9 +34,9 @@
                 return $modules[ name ]
         } else if(
            // <script data-md="somename" type="text/n"> </script>           
-            win.document.querySelector( 'script[type="text/n"][data-md=' + name + ']' )
+            win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' )
         ){
-            var thatScr = win.document.querySelector( 'script[type="text/n"][data-md=' + name + ']' ),
+            var thatScr = win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' ),
             ret = Function(thatScr.innerHTML)(win);
             $modules[name] = ret;
             thatScr.parentNode.removeChild(thatScr);

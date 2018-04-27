@@ -20,7 +20,7 @@
   </script>
   
   <!-- micromodules -->
-  <script src="../dist/micromodules.min.js"></script>
+  <script src="../src/micromodules.js"></script>
   <!-- ./micromodules -->
 
   <script src="../node_modules/jquery/dist/jquery.js"></script>
@@ -132,6 +132,9 @@ QUnit.test('Auto importing of globals', function(assert){
   assert.notDeepEqual(
     include('Date'), undefined, 'Date is imported to module object and this time NOT pulled from global'
   )
+
+  assert.deepEqual( include('$script', 1), undefined, '#1 and #2' )
+  
 });
 
 QUnit.test('Inline modules', function(assert){
