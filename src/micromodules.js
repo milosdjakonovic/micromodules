@@ -39,7 +39,8 @@
             $modules[name] = ret;
             thatScr.parentNode.removeChild(thatScr);
             return ret;
-        } else if ( name in win && /*deep include*/ arguments[1] == true ){
+        } else if ( name.slice(0,-1) in win && /*deep include*/ name.match(/\+$/) ){
+            name = name.slice(0,-1);
             $modules[name] = win[name];
             return win[name]
         } else {

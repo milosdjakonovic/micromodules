@@ -108,10 +108,10 @@ declare('mod_name', function(include){
 There is a useful option of storing a global variable into **micromodules** module system and subsequent including:
 
 ```javascript
-var Raf = include('requestAnimationFrame',1);
-var jQuery = include('jQuery',1);
+var Raf = include('requestAnimationFrame+');
+var jQuery = include('jQuery+');
 ```
-This option is triggered with second argument set to `true` or `1`, which means, if there is no requested module name, before giving up, try to search global variables and import them if founded.
+This option is triggered with the last character of identifier set to `+`, which means, if there is no requested module name, before giving up, try to search global variables and import them if founded.
 
 This way we will have globals as local vars pulled from module system.
 
