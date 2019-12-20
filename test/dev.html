@@ -143,6 +143,31 @@ QUnit.test('Inline modules', function(assert){
   );
 
 });
+QUnit.test('Cleanup of the used inline modules', function(assert){
+  assert.deepEqual(
+    document.querySelector( 'script[type="text/n"][data-md="inline1"]' ),
+    null
+  )
+})
+
+QUnit.test('Implicit updating of the module', function(assert){ // This is more unintended behavior
+
+  declare('ObjectishModule', function(){
+    return {
+      field1: true
+    }
+  });
+
+  include('ObjectishModule').field2 = true;
+
+  var ObjectishModule =  include('ObjectishModule');
+
+  assert.deepEqual(
+    ObjectishModule.field2, true
+  );
+
+});
+
 
 
   </script>

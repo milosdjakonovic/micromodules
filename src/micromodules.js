@@ -19,7 +19,7 @@
      * @param name - the name of the module
      */
     fninclude = function(){
-        var name = arguments[0];
+        var name = arguments[0], thatScr;
         //if( typeof($modules[ name ])!== 'undefined')
         if( name in $modules ){ 
             if(typeof $modules[name] === "object" && "_bindeD_fn_$" in $modules[name] &&   ! ("fnval" in $modules[name])    ){
@@ -33,11 +33,9 @@
             } else
                 return $modules[ name ]
         } else if(
-           // <script data-md="somename" type="text/n"> </script>           
-            win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' )
+           thatScr = win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' )
         ){
-            var thatScr = win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' ),
-            ret = Function(thatScr.innerHTML)(win);
+            var ret = Function(thatScr.innerHTML)(win);
             $modules[name] = ret;
             thatScr.parentNode.removeChild(thatScr);
             return ret;
@@ -81,4 +79,3 @@
     win.declare = fndeclare;
     win.include = fninclude;
 })(window);
-
