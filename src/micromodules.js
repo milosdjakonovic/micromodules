@@ -56,20 +56,26 @@
             var toInclude = $modules[name];
             if(typeof toInclude === "object" && toInclude instanceof ComplexMod && !("fnval" in toInclude)){
                 toInclude.fnval = toInclude.fn.apply(win, [fninclude]);
+                if(cb) cb.apply(win, [toInclude.fnval, fninclude]);
                 return toInclude.fnval;
             } else if(
                 typeof toInclude === "object" &&
                 toInclude instanceof ComplexMod &&
                   "fnval" in toInclude ){
-                return toInclude['fnval']
-            } else
-                return $modules[ name ]
+                if(cb) cb.apply(win, [toInclude['fnval'], fninclude]);
+                return toInclude['fnval'];
+            } else{
+                if(cb) cb.apply(win, [$modules[ name ], fninclude]);
+                return $modules[ name ];
+            }
+                
         } else if(
            thatScr = win.document.querySelector( 'script[type="text/n"][data-md="' + name + '"]' )
         ){
             var ret = Function(thatScr.innerHTML)(win);
             $modules[name] = ret;
             thatScr.parentNode.removeChild(thatScr);
+            if(cb) cb.apply(win, [$modules[ name ], fninclude]);
             return ret;
         } else if ( !cb && name.slice(0,-1) in win && /*deep include*/ name.match(/\+$/) ){
             name = name.slice(0,-1);

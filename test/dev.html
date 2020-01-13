@@ -185,9 +185,18 @@ QUnit.test('Async module fnlt, basic', function(assert){
     declare('Miloshioo', function(){
       return 321321323
     });
-    done()
 
-  },1000)
+    include('on: Miloshioo', function(Miloshioo, include){
+      var Self = this;
+      assert.deepEqual(Self, window);
+      assert.deepEqual(Miloshioo, 321321323);
+      assert.deepEqual(include, window.include)
+      done();
+    });
+    
+    
+
+  },1000);
 
 })
 
