@@ -168,6 +168,29 @@ QUnit.test('Implicit updating of the module', function(assert){ // This is more 
 
 });
 
+QUnit.test('Async module fnlt, basic', function(assert){
+
+  var done = assert.async();
+
+  
+  include('on: Miloshioo', function(Miloshioo, include){
+    var Self = this;
+    assert.deepEqual(Self, window);
+    assert.deepEqual(Miloshioo, 321321323);
+    assert.deepEqual(include, window.include)
+  });
+
+  setTimeout(function(){
+
+    declare('Miloshioo', function(){
+      return 321321323
+    });
+    done()
+
+  },1000)
+
+})
+
 
 
   </script>
